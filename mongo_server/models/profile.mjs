@@ -11,7 +11,8 @@ const profileModel = new Schema({
     user: {
         type: Types.ObjectId,
         ref: "User",
-        required: true
+        required: true, //must have (can not exit without user)
+        unique: true, //avoid duplicate creation of profile
     }
 },
     { timestamps: true }
