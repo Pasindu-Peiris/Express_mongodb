@@ -1,5 +1,6 @@
 import { Router } from "express";
 import User from "../models/user.mjs";
+import Profile from "../models/profile.mjs";
 
 
 const userRouter = Router();
@@ -91,5 +92,53 @@ userRouter.get('/get-user-profile/:userid', async (c, w) => {
     }
 
 })
+
+
+//delete user with his profile using id
+userRouter.delete('/delete-user-profile/:userid', async (c, w) => {
+
+    try {
+        const userid = c.params.userid;
+
+        const search_user = await User.findById(userid);
+
+        console.log(search_user)
+
+        if (!search_user) {
+            return w.status(400).json({ message: "user not found!" });
+        }
+
+        const search_profile = await Profile.findOne({ user: search_user.id });
+
+        console.log(search_profile)
+
+
+        if (search_profile) {
+
+            const delete_user = await User.findByIdAndDelete(userid)
+            const delete_profile = await Profile.findByIdAndDelete(search_profile._id)
+
+            if (delete_user && delete_profile) {
+                return w.status(200).json({ message: "user delete successful with profile" })
+            }
+
+        } else {
+            const delete_user = await User.findByIdAndDelete(userid)
+
+            if (delete_user) {
+                return w.status(200).json({ message: "user delete successful with out profile" })
+            }
+
+        }
+
+        return w.status(401).json({ message: "could not deleted !" })
+
+    } catch (error) {
+        return w.status(400).json({ message: "error " });
+
+    }
+
+})
+
 
 export default userRouter;
