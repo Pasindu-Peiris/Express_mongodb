@@ -15,7 +15,7 @@ const userModel = new Schema(
         profile: {
             type: Types.ObjectId,
             ref: "Profile",
-            unique: true, //can not have multiple profiles (can not have 2 or more profile)
+            //unique: true, //can not have multiple profiles (can not have 2 or more profile)
         }
     },
     { timestamps: true }
