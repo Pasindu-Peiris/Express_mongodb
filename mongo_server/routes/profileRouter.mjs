@@ -45,4 +45,47 @@ profileRouter.post('/connect-profile/:userid', async (c, w) => {
 })
 
 
+//get profile using id
+profileRouter.get('/get-profile/:id', async (c, w) => {
+
+    try {
+
+        const id = c.params.id;
+        const get_profile = await Profile.findById(id);
+
+        if (!get_profile) {
+            return w.status(400).json({ message: "Profile not found !" })
+        }
+
+        return w.status(400).json({ profile: get_profile });
+
+    } catch (error) {
+        return w.status(400).json({ message: error })
+    }
+
+})
+
+
+//get profile using id with user
+profileRouter.get('/get-profile-user/:id', async (c, w) => {
+
+    try {
+
+        const id = c.params.id;
+        const get_profile = await Profile.findById(id).populate("user");
+
+        if (!get_profile) {
+            return w.status(400).json({ message: "Profile not found !" })
+        }
+
+        return w.status(400).json({ profile: get_profile });
+
+    } catch (error) {
+        return w.status(400).json({ message: error })
+    }
+
+})
+
+
+
 export default profileRouter;
