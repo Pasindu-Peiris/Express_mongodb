@@ -12,10 +12,10 @@ const userModel = new Schema(
         password: String,
 
         //connect relation 1:1 connection 1 user have 1 profile (not must)
-        profile:{
-            type:Types.ObjectId,
-            ref:"Profile",
-            unique:true
+        profile: {
+            type: Types.ObjectId,
+            ref: "Profile",
+            unique: true, //can not have multiple profiles (can not have 2 or more profile)
         }
     },
     { timestamps: true }
