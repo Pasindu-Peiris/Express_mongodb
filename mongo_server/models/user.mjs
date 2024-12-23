@@ -1,4 +1,4 @@
-import { model, Schema } from "mongoose";
+import { model, Schema, Types } from "mongoose";
 
 const userModel = new Schema(
     {
@@ -10,6 +10,13 @@ const userModel = new Schema(
         username: String,
         email: String,
         password: String,
+
+        //connect relation 1:1 connection 1 user have 1 profile (not must)
+        profile:{
+            type:Types.ObjectId,
+            ref:"Profile",
+            unique:true
+        }
     },
     { timestamps: true }
 );
