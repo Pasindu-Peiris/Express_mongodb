@@ -4,8 +4,8 @@ const userModel = new Schema({
 
     name: {
         type: String,
-        require: true,
-        unique: true
+        required: true,
+        unique: true,
 
     },
     username: String,
