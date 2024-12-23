@@ -1,0 +1,4 @@
+mongodb connect => 
+
+//connect way files to index.mjs page
+model => route => rootRoute => index
