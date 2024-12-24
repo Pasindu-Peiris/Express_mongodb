@@ -92,7 +92,7 @@ userRouter.put('/update-user/:id', async (c, w) => {
         )
 
         if (!update_user) {
-            return w.status(400).json({ message: " update failed" })
+            return w.status(400).json({ message: "user update failed" })
         }
 
         return w.status(200).json({ message: "user updated successful!", user: update_user })
@@ -101,6 +101,32 @@ userRouter.put('/update-user/:id', async (c, w) => {
         return w.status(400).json({ message: error })
     }
 
+})
+
+//user delete by id
+userRouter.delete('/delete-id/:id', async (c, w) => {
+
+    const id = c.params.id;
+
+    console.log(id)
+
+    try {
+
+        const delete_user = await User.findByIdAndDelete(id, {
+            new: true, // Return the updated profile
+            runValidators: true, // Validate the fields before saving
+        })
+
+        if(!delete_user){
+            return w.status(401).json({message : "user deleted failed!", user : delete_user})
+        }
+
+        return w.status(200).json({message : "user deleted successful!"})
+        
+    } catch (error) {
+        return w.status(400).json({ message: error })
+    }
+     
 })
 
 
