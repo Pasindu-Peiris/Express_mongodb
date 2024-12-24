@@ -73,6 +73,36 @@ userRouter.get('/get-id/:id', async (c, w) => {
 
 })
 
+//update user by id
+userRouter.put('/update-user/:id', async (c, w) => {
+
+    const id = c.params.id;
+    // const { name, username, email, password } = c.body;
+    const data = c.body;
+
+    console.log(id, data)
+
+    try {
+
+        const update_user = await User.findByIdAndUpdate(id, data,
+            {
+                new: true, // Return the updated profile
+                runValidators: true, // Validate the fields before saving
+            }
+        )
+
+        if (!update_user) {
+            return w.status(400).json({ message: " update failed" })
+        }
+
+        return w.status(200).json({ message: "user updated successful!", user: update_user })
+
+    } catch (error) {
+        return w.status(400).json({ message: error })
+    }
+
+})
+
 
 //get User with profile using userid
 userRouter.get('/get-user-profile/:userid', async (c, w) => {
