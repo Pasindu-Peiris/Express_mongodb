@@ -115,8 +115,8 @@ userRouter.delete('/delete-user-profile/:userid', async (c, w) => {
 
         if (search_profile) {
 
-            const delete_user = await User.findByIdAndDelete(userid)
-            const delete_profile = await Profile.findByIdAndDelete(search_profile._id)
+            const delete_user = await User.findByIdAndDelete(userid);
+            const delete_profile = await Profile.findByIdAndDelete(search_profile._id);
 
             if (delete_user && delete_profile) {
                 return w.status(200).json({ message: "user delete successful with profile" });
