@@ -90,9 +90,27 @@ profileRouter.get('/get-profile-user/:id', async (c, w) => {
 //update profile 
 profileRouter.put('/update-profile/:id', async (c, w) => {
 
+    const id = c.params;
     const data = c.body;
 
     console.log(data)
+
+    try {
+
+        const update_profile = User.findByIdAndUpdate(id, data, {
+            new: true, // Return the updated profile
+            runValidators: true, // Validate the fields before saving
+        })
+
+        if (!update_profile) {
+            return w.status(401).json({ message: "profile not updated" })
+        }
+
+        return w.status(200).json({ message: "profile updated", profile: update_profile })
+
+    } catch (error) {
+        return w.status(400).json({ error: error })
+    }
 
 })
 
