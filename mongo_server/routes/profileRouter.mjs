@@ -84,6 +84,16 @@ profileRouter.get('/get-profile-user/:id', async (c, w) => {
         return w.status(400).json({ message: error })
     }
 
+});
+
+
+//update profile 
+profileRouter.put('/update-profile/:id', async (c, w) => {
+
+    const data = c.body;
+
+    console.log(data)
+
 })
 
 
