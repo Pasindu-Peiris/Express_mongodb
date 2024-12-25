@@ -90,14 +90,14 @@ profileRouter.get('/get-profile-user/:id', async (c, w) => {
 //update profile 
 profileRouter.put('/update-profile/:id', async (c, w) => {
 
-    const id = c.params;
+    const id = c.params.id;
     const data = c.body;
 
-    console.log(data)
+    console.log(data, id)
 
     try {
 
-        const update_profile = User.findByIdAndUpdate(id, data, {
+        const update_profile = await Profile.findByIdAndUpdate(id, data, {
             new: true, // Return the updated profile
             runValidators: true, // Validate the fields before saving
         })
@@ -110,9 +110,35 @@ profileRouter.put('/update-profile/:id', async (c, w) => {
 
     } catch (error) {
         return w.status(400).json({ error: error })
+
+    }
+
+});
+
+//delete profile 
+profileRouter.delete('/delete-profile/:id', async (c, w) => {
+
+    const id = c.params.id;
+
+    try {
+
+        const deleted_profile = await Profile.findByIdAndDelete(id, {
+            new: true, // Return the updated profile
+            runValidators: true, // Validate the fields before saving
+        })
+
+        if(!deleted_profile){
+            return w.status(400).json({message: "profile deleted failed"})
+        }
+
+        return w.status(200).json({message : "profile deleted"})
+
+    } catch (error) {
+        return w.status(400).json({ error: error })
     }
 
 })
+
 
 
 
