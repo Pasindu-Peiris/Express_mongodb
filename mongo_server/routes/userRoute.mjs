@@ -196,7 +196,6 @@ userRouter.delete('/delete-user-profile/:userid', async (c, w) => {
 
 })
 
-//update user and his profile 
 
 
 export default userRouter;
