@@ -16,8 +16,18 @@ const userModel = new Schema(
             type: Types.ObjectId,
             ref: "Profile",
             //unique: true, //can not have multiple profiles (can not have 2 or more profile)
-        }
+        },
+
+        //connect 1:M relationship 1 user have many products [this side has many product]
+        product:[
+            {
+                type:Types.ObjectId,
+                ref:"Product",
+            }
+        ]
     },
+
+    
     { timestamps: true }
 );
 
