@@ -6,6 +6,7 @@ const productModule = new Schema(
             type: String
         },
         image: String,
+        //connect user 1:M relationship 
         user: {
             type: Types.ObjectId,
             ref: "User"
