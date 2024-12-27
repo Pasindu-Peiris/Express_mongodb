@@ -23,8 +23,13 @@ productRouter.get('/product-all', async (_, w) => {
     } catch (error) {
         return w.status(500).json({ message: "internal server error!" });
     }
-})
+});
 
+
+//create product [product create with user id [product cerate => add product _id into User document product array[]]]
+productRouter.post('/product-create', async (c, w) => {
+
+})
 
 
 
