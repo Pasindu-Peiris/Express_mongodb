@@ -28,9 +28,11 @@ productRouter.post("/product-create", async (c, w) => {
 
     const data = c.body
 
+    console.log(data);
+
     try {
 
-        const created_product = await Product.create()
+        const created_product = await Product.create(data);
 
     } catch (error) {
         console.log(error);
