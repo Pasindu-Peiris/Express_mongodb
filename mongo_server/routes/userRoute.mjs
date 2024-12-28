@@ -197,5 +197,27 @@ userRouter.delete('/delete-user-profile/:userid', async (c, w) => {
 })
 
 
+//get user by id with all products and profile
+userRouter.get('/get-user-product/:userid', async (c, w) => {
+
+    const userid = c.params.userid;
+    try {
+        const get_user = await User.findById(userid).populate(["product", "profile"]) //populate for get profile using connected relation using select([can get only selected attributes])
+
+        if (!get_user) {
+            return w.status(400).json({ message: "user not found !" })
+        }
+
+        return w.status(200).json({ user: get_user })
+
+    } catch (error) {
+        return w.status(400).json({ message: error })
+    }
+
+})
+
+
+
+
 
 export default userRouter;
