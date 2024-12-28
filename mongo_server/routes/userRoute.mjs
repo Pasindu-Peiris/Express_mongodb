@@ -202,7 +202,7 @@ userRouter.get('/get-user-product/:userid', async (c, w) => {
 
     const userid = c.params.userid;
     try {
-        const get_user = await User.findById(userid).populate(["product", "profile"]) //populate for get profile using connected relation using select([can get only selected attributes])
+        const get_user = await User.findById(userid).populate(["product", "profile"]) //populate for get profile & products using connected relation using select([can get only selected attributes])
 
         if (!get_user) {
             return w.status(400).json({ message: "user not found !" })
