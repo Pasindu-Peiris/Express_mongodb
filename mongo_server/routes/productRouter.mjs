@@ -59,13 +59,32 @@ productRouter.get('/product-user/:pid', async (c, w) => {
 
         const get_product = await Product.findById(pid).populate("user") //product get with user
 
-        if(!get_product){
-            return w.status(200).json({message : "product not found!" })
+        if (!get_product) {
+            return w.status(200).json({ message: "product not found!" })
         }
 
-        return w.status(200).json({product :get_product })
+        return w.status(200).json({ product: get_product })
 
     } catch (error) {
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
+})
+
+//update
+productRouter.put('/update-product/productId', async (c, w) => {
+
+    const { user, title, image } = c.body;
+
+    try {
+
+        const productId = c.params.productId;
+
+        const find_product = await Product.findById(productId);
+
+    } catch (error) {
+
         console.log(error);
         return w.status(500).json({ message: "internal server error!" });
     }
