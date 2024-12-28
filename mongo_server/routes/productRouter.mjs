@@ -32,9 +32,9 @@ productRouter.post("/product-create", async (c, w) => {
     const created_product = await Product.create({ user, title, image }); //create product
 
     const update_user_product = await User.updateOne(
-      //update user products array using created new product
+      //update user product array using created new product
       { _id: user },
-      { $push: { products: created_product._id } },
+      { $push: { product: created_product._id } },
       {
         new: true, // Return the updated profile
         runValidators: true, // Validate the fields before saving
