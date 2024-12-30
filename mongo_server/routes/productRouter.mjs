@@ -148,6 +148,10 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         } else {
 
+            const update_product = await Product.updateOne(
+                { user, title, image }
+            )
+
 
         }
 
