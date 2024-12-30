@@ -73,7 +73,7 @@ productRouter.get('/product-user/:pid', async (c, w) => {
 })
 
 //update
-productRouter.put('/update-product/productId', async (c, w) => {
+productRouter.put('/update-product/:productId', async (c, w) => {
 
     const { user, title, image } = c.body;
 
@@ -82,6 +82,44 @@ productRouter.put('/update-product/productId', async (c, w) => {
         const productId = c.params.productId;
 
         const find_product = await Product.findById(productId);
+
+    } catch (error) {
+
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
+})
+
+//delete product and disconnect user
+productRouter.delete('/delete-product/:productId', async (c, w) => {
+
+    const productId = c.params.productId;
+
+    try {
+
+        const deleted_product = await Product.findByIdAndDelete(productId);
+
+        if (!deleted_product) {
+            return w.status(400).json({ message: "product is not deleted!" })
+        }
+
+        const delete_product_user = await User.updateOne(
+            //update user product array using delete product [disconnect product in user's product array]
+            { _id: deleted_product.user },
+            { $pull: { product: deleted_product._id } },
+            {
+                new: true, // Return the updated profile
+                runValidators: true, // Validate the fields before saving
+            }
+        )
+
+        if (!delete_product_user) {
+            return w.status(400).json({ message: "product is not deleted!" })
+        }
+
+        return w.status(200).json({ message: "product deleted successful user disconnected", user: deleted_product, product: delete_product_user })
+
 
     } catch (error) {
 
