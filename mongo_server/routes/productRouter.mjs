@@ -120,7 +120,6 @@ productRouter.delete('/delete-product/:productId', async (c, w) => {
 
         return w.status(200).json({ message: "product deleted successful user disconnected", user: deleted_product, product: delete_product_user })
 
-
     } catch (error) {
 
         console.log(error);
