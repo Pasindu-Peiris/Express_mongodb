@@ -120,7 +120,39 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         const productId = c.params.productId;
 
-        const find_product = await Product.findById(productId);
+        const search_user_id = await Product.findById(productId); //get product details [for check user id]
+
+        if (search_user_id.user == user) { //check if db user === coming user for update
+
+            const disconnect_user = await User.updateOne(
+                //update user product array using delete product [disconnect product in user's product array]
+                { _id: search_user_id.user },
+                { $pull: { product: search_user_id._id } },
+                {
+                    new: true, // Return the updated profile
+                    runValidators: true, // Validate the fields before saving
+                }
+            )
+
+            const created_product = await Product.create({ user, title, image }); //create product
+
+            const update_user_product = await User.updateOne(
+                //update user product array using created new product
+                { _id: user },
+                { $push: { product: created_product._id } },
+                {
+                    new: true, // Return the updated profile
+                    runValidators: true, // Validate the fields before saving
+                }
+            );
+
+        } else {
+
+
+        }
+
+
+
 
         console.log(find_product)
 
