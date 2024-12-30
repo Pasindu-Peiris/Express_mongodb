@@ -122,6 +122,8 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         const find_product = await Product.findById(productId);
 
+        console.log(find_product)
+
     } catch (error) {
 
         console.log(error);
