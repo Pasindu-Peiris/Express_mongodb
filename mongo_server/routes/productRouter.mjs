@@ -72,24 +72,6 @@ productRouter.get('/product-user/:pid', async (c, w) => {
 
 })
 
-//update
-productRouter.put('/update-product/:productId', async (c, w) => {
-
-    const { user, title, image } = c.body;
-
-    try {
-
-        const productId = c.params.productId;
-
-        const find_product = await Product.findById(productId);
-
-    } catch (error) {
-
-        console.log(error);
-        return w.status(500).json({ message: "internal server error!" });
-    }
-
-})
 
 //delete product and disconnect user
 productRouter.delete('/delete-product/:productId', async (c, w) => {
@@ -119,6 +101,26 @@ productRouter.delete('/delete-product/:productId', async (c, w) => {
         }
 
         return w.status(200).json({ message: "product deleted successful user disconnected", user: deleted_product, product: delete_product_user })
+
+    } catch (error) {
+
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
+})
+
+
+//update
+productRouter.put('/update-product/:productId', async (c, w) => {
+
+    const { user, title, image } = c.body;
+
+    try {
+
+        const productId = c.params.productId;
+
+        const find_product = await Product.findById(productId);
 
     } catch (error) {
 
