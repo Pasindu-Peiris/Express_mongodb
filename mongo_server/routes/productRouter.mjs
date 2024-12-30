@@ -136,6 +136,10 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
             const created_product = await Product.create({ user, title, image }); //create product
 
+            if (!created_product) {
+                return w.status(400).json({ message: "product is not updated!" })
+            }
+
             const update_user_product = await User.updateOne(
                 //update user product array using created new product
                 { _id: user },
@@ -146,19 +150,26 @@ productRouter.put('/update-product/:productId', async (c, w) => {
                 }
             );
 
+            if (!update_user_product) {
+                return w.status(400).json({ message: "product user is not updated!" })
+            }
+
+            return w.status(200).json({ message: "product is updated with user!" })
+
+
         } else {
 
             const update_product = await Product.updateOne(
                 { user, title, image }
             )
 
+            if (!update_product) {
+                return w.status(400).json({ message: "product is not updated!" })
+            }
+
+            return w.status(200).json({ message: "product is updated!" })
 
         }
-
-
-
-
-        console.log(find_product)
 
     } catch (error) {
 
