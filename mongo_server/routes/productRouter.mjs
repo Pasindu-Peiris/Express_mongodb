@@ -122,25 +122,25 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         const search_user_id = await Product.findById(productId); //get product details [for check user id]
 
-        console.log(search_user_id.user)
+        console.log(search_user_id.user) //print searched user
 
         if (search_user_id.user == user) { //check if db user === coming user for update
 
-            const update_product = await Product.updateOne(
-                { user, title, image }
+            const update_product = await Product.updateOne( //use updateOne for update product in same user
+                { user, title, image } //updateOne => return only effected row details , not updated object
             )
 
-            if (!update_product) {
+            if (!update_product) { // updated product 
                 return w.status(400).json({ message: "product is not updated!" })
             }
 
-            return w.status(200).json({ message: "product is updated !" })
+            return w.status(200).json({ message: "product is updated !" }) //return message for updated product
 
 
 
-        } else {
+        } else { //if updated incoming user is not same search user
 
-            const disconnect_user = await User.findOneAndUpdate(
+            const disconnect_user = await User.findOneAndUpdate( //findOneAndUpdate => return object updated , then we can get disconnect_user details
                 //update user product array using delete product [disconnect product in user's product array]
                 { _id: search_user_id.user },
                 { $pull: { product: productId } },
