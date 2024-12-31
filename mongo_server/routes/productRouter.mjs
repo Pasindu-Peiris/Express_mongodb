@@ -122,42 +122,9 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         const search_user_id = await Product.findById(productId); //get product details [for check user id]
 
+        console.log(search_user_id.user)
+
         if (search_user_id.user == user) { //check if db user === coming user for update
-
-            const disconnect_user = await User.updateOne(
-                //update user product array using delete product [disconnect product in user's product array]
-                { _id: search_user_id.user },
-                { $pull: { product: search_user_id._id } },
-                {
-                    new: true, // Return the updated profile
-                    runValidators: true, // Validate the fields before saving
-                }
-            )
-
-            const created_product = await Product.create({ user, title, image }); //create product
-
-            if (!created_product) {
-                return w.status(400).json({ message: "product is not updated!" })
-            }
-
-            const update_user_product = await User.updateOne(
-                //update user product array using created new product
-                { _id: user },
-                { $push: { product: created_product._id } },
-                {
-                    new: true, // Return the updated profile
-                    runValidators: true, // Validate the fields before saving
-                }
-            );
-
-            if (!update_user_product) {
-                return w.status(400).json({ message: "product user is not updated!" })
-            }
-
-            return w.status(200).json({ message: "product is updated with user!" })
-
-
-        } else {
 
             const update_product = await Product.updateOne(
                 { user, title, image }
@@ -167,7 +134,47 @@ productRouter.put('/update-product/:productId', async (c, w) => {
                 return w.status(400).json({ message: "product is not updated!" })
             }
 
-            return w.status(200).json({ message: "product is updated!" })
+            return w.status(200).json({ message: "product is updated !" })
+
+
+
+        } else {
+
+            const disconnect_user = await User.findOneAndUpdate(
+                //update user product array using delete product [disconnect product in user's product array]
+                { _id: search_user_id.user },
+                { $pull: { product: search_user_id._id } },
+                {
+                    new: true, // Return the updated profile
+                    runValidators: true, // Validate the fields before saving
+                }
+            )
+
+            console.log(disconnect_user)
+
+            const update_product = await Product.updateOne({ _id: productId }, { user, title, image }); //create product
+
+            if (!update_product) {
+                return w.status(400).json({ message: "product is not updated!" })
+            }
+
+            const update_user_product = await User.findOneAndUpdate(
+                //update user product array using created new product
+                { _id: user },
+                { $push: { product: update_product._id } },
+                {
+                    new: true, // Return the updated profile
+                    runValidators: true, // Validate the fields before saving
+                }
+            );
+
+            console.log(update_user_product)
+
+            if (!update_user_product) {
+                return w.status(400).json({ message: "product user is not updated!" })
+            }
+
+            return w.status(200).json({ message: "product is updated with user!" })
 
         }
 
