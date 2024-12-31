@@ -111,7 +111,7 @@ productRouter.delete('/delete-product/:productId', async (c, w) => {
 })
 
 
-//update
+//update product
 productRouter.put('/update-product/:productId', async (c, w) => {
 
     const { user, title, image } = c.body;
@@ -140,6 +140,7 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
         } else { //if updated incoming user is not same search user
 
+            //disconnect connected user for product
             const disconnect_user = await User.findOneAndUpdate( //findOneAndUpdate => return object updated , then we can get disconnect_user details
                 //update user product array using delete product [disconnect product in user's product array]
                 { _id: search_user_id.user },
@@ -150,24 +151,26 @@ productRouter.put('/update-product/:productId', async (c, w) => {
                 }
             )
 
+            //return checker
             if (!disconnect_user) {
                 return w.status(400).json({ message: "user is not disconnected!" })
             }
 
-            console.log(disconnect_user)
+            console.log(disconnect_user)//print disconnect user
 
+            //update exiting product with new incoming user
             const update_product = await Product.findOneAndUpdate({ _id: productId }, { user, title, image }); //create product
 
-            if (!update_product) {
+            if (!update_product) { //return check
                 return w.status(400).json({ message: "product is not updated!" })
             }
 
             console.log(update_product)
 
-            const update_user_product = await User.findOneAndUpdate(
+            const update_user_product = await User.findOneAndUpdate( //connect user with findOneAndUpdate for get updated user object details
                 //update user product array using created new product
                 { _id: user },
-                { $push: { product: update_product._id } },
+                { $push: { product: update_product._id } }, //add updated product._id in user product  
                 {
                     new: true, // Return the updated profile
                     runValidators: true, // Validate the fields before saving
@@ -176,11 +179,11 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
             console.log(update_user_product)
 
-            if (!update_user_product) {
-                return w.status(400).json({ message: "product user is not updated!" })
+            if (!update_user_product) {//return checker
+                return w.status(400).json({ message: "product user is not updated!" }) 
             }
 
-            return w.status(200).json({ message: "product is updated with user!" })
+            return w.status(200).json({ message: "product is updated with user!" }) //return checker
 
         }
 
