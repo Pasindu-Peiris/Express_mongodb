@@ -118,7 +118,7 @@ productRouter.put('/update-product/:productId', async (c, w) => {
 
     try {
 
-        const productId = c.params.productId;
+        const productId = c.params.productId; //get product id for update
 
         const search_user_id = await Product.findById(productId); //get product details [for check user id]
 
@@ -143,20 +143,26 @@ productRouter.put('/update-product/:productId', async (c, w) => {
             const disconnect_user = await User.findOneAndUpdate(
                 //update user product array using delete product [disconnect product in user's product array]
                 { _id: search_user_id.user },
-                { $pull: { product: search_user_id._id } },
+                { $pull: { product: productId } },
                 {
                     new: true, // Return the updated profile
                     runValidators: true, // Validate the fields before saving
                 }
             )
 
+            if (!disconnect_user) {
+                return w.status(400).json({ message: "user is not disconnected!" })
+            }
+
             console.log(disconnect_user)
 
-            const update_product = await Product.updateOne({ _id: productId }, { user, title, image }); //create product
+            const update_product = await Product.findOneAndUpdate({ _id: productId }, { user, title, image }); //create product
 
             if (!update_product) {
                 return w.status(400).json({ message: "product is not updated!" })
             }
+
+            console.log(update_product)
 
             const update_user_product = await User.findOneAndUpdate(
                 //update user product array using created new product
