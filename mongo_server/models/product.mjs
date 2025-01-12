@@ -10,7 +10,14 @@ const productModule = new Schema(
         user: {
             type: Types.ObjectId,
             ref: "User"
-        }
+        },
+        //connect N:M relationship product and category || category as ARRAY[]
+        category:[
+            {
+                type:Types.ObjectId,
+                ref:"Category"
+            }
+        ]
     },
     { timestamps: true }
 )
