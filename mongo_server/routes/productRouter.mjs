@@ -57,7 +57,7 @@ productRouter.get('/product-user/:pid', async (c, w) => {
 
     try {
 
-        const get_product = await Product.findById(pid).populate("user") //product get with user
+        const get_product = await Product.findById(pid).populate("user", "category") //product get with user
 
         if (!get_product) {
             return w.status(200).json({ message: "product not found!" })
