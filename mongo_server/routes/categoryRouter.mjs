@@ -54,8 +54,18 @@ categoryRouter.put('/connect-product-category/:cate_id', async (c, w) => {
 
     try {
 
-        const product_found = await Product.findById()
-        
+        const product_found = await Product.findById(category_id);
+        const category_found = await Category.findById(product_id);
+
+        product_found.category.push(category_id);
+        category_id.product.push(product_id)
+
+        await product_found.save();
+        await category_found.save();
+
+        return w.stats(200).json({message : "category connected with product !"})
+
+
     } catch (error) {
         console.log(error);
         return w.status(500).json({ message: "internal server error!" });
