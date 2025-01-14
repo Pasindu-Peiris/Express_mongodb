@@ -1,4 +1,5 @@
 import { Router } from "express";
+import Category from "../models/category.mjs";
 
 const categoryRouter = Router();
 
@@ -7,6 +8,27 @@ categoryRouter.get('/', async (_, w) => {
 })
 
 //create category
+
+
+//get category
+categoryRouter.get('/all-category', async (c, w) => {
+
+    try {
+
+        const all_category = await Category.find();
+
+        if(!all_category){
+            return w.status(400).json({ message: "category not found!" });
+        }
+
+        return w.status(200).json({ Category: all_category});
+        
+    } catch (error) {
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
+})
 
 
 
