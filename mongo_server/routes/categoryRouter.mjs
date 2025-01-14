@@ -65,7 +65,7 @@ categoryRouter.put('/connect-product-category/:cate_id', async (c, w) => {
             return w.status(400).json({ message: "product or category not found !" });
         }
 
-        product_found.category.push(category_id);
+        product_found.category.push(category_id);//push category id to category array
         category_found.product.push(product_id);
 
         await product_found.save();
@@ -79,6 +79,8 @@ categoryRouter.put('/connect-product-category/:cate_id', async (c, w) => {
     }
 
 
-})
+});
+
+
 
 export default categoryRouter;
