@@ -25,7 +25,20 @@ categoryRouter.get("/all-category", async (c, w) => {
 
 //create category
 categoryRouter.post("/create-category", async (c, w) => {
-    
+
+    const {title} = c.body;
+
+    console.log(title);
+
+    try {
+
+        const create_category = 
+        
+    } catch (error) {
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
 })
 
 export default categoryRouter;
