@@ -84,18 +84,43 @@ categoryRouter.put('/connect-product-category/:cate_id', async (c, w) => {
 //remove category from product
 categoryRouter.delete('/remove-cate-in-product/:prodId', async (c, w) => {
 
-    const category_id = c.params.cate_id;
-    const product_id = c.query.prodid;
+    const category_id = c.query.cate_id;
+    const product_id = c.params.prodId;
 
     try {
-        
+
+        const search_product = await Product.findById(product_id);
+
+        if (!search_product) {
+            return w.status(400).json({ message: "product not found !" });
+        }
+
+        const search_category = search_product.category.indexOf(category_id) //check given category Id is in category array
+
+        if (search_category === -1) {
+            return w.status(400).json({ message: "category not found !" });
+        }
+
+        const disconnect_category = await Product.findByIdAndUpdate(
+            { _id: product_id },
+            { $pull: { category: category_id } },
+            {
+                new: true, // Return the updated profile
+                runValidators: true, // Validate the fields before saving
+            }
+        )
+
+        if (!disconnect_category) {
+            return w.status(400).json({ message: "category not disconnected from product !" });
+        }
+        return w.status(200).json({ message: "category disconnected from product !" });
+
+
     } catch (error) {
         console.log(error);
         return w.status(500).json({ message: "internal server error!" });
     }
 
-
-    console.log(prodId)
 
 })
 
