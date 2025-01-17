@@ -81,6 +81,24 @@ categoryRouter.put('/connect-product-category/:cate_id', async (c, w) => {
 
 });
 
+//remove category from product
+categoryRouter.delete('/remove-cate-in-product/:prodId', async (c, w) => {
+
+    const category_id = c.params.cate_id;
+    const product_id = c.query.prodid;
+
+    try {
+        
+    } catch (error) {
+        console.log(error);
+        return w.status(500).json({ message: "internal server error!" });
+    }
+
+
+    console.log(prodId)
+
+})
+
 
 
 export default categoryRouter;
