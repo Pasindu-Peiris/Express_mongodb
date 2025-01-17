@@ -111,7 +111,7 @@ categoryRouter.delete('/remove-cate-in-product/:prodId', async (c, w) => {
         )
 
         if (!disconnect_category) {
-            return w.status(400).json({ message: "category not disconnected from product !" });
+            return w.status(400).json({ message: "category not disconnected from product !",  disconnect_category:  disconnect_category });
         }
         return w.status(200).json({ message: "category disconnected from product !" });
 
